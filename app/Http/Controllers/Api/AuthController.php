@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\HasApiTokens;
 
 class AuthController extends Controller
 {
@@ -50,13 +51,10 @@ class AuthController extends Controller
             ->json(['message' => 'Hi ' . $user->name . ', welcome to home', 'access_token' => $token, 'token_type' => 'Bearer',]);
     }
 
-    // TODO: implement logout
     // method for user logout and delete token
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        Auth()->user()->tokens()->delete();
 
         return [
             'message' => 'You have successfully logged out and the token was successfully deleted'

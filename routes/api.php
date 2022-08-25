@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return ['msg' => 'Welcome to Monstre API'];
+});
+
 //API route for register new user
 Route::post('/register', [App\Http\Controllers\Api\AuthController::class, 'register']);
 //API route for login user
@@ -21,7 +25,7 @@ Route::post('/login', [App\Http\Controllers\Api\AuthController::class, 'login'])
 
 //Protecting Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/profile', function (Request $request) {
+    Route::get('/profile', function () {
         return auth()->user();
     });
 
