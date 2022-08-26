@@ -34,6 +34,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // API route for update user's personality
     Route::put('/update-personality', [App\Http\Controllers\Api\UserController::class, 'updatePersonality']);
+
+    // API route for update user's avatar
+    Route::post('/update-avatar', [App\Http\Controllers\Api\UserController::class, 'updateAvatar']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

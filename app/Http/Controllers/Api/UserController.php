@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -23,5 +25,27 @@ class UserController extends Controller
         $user->personality = $request->personality;
         $user->save();
         return response()->json($user);
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if ($image = $request->file('avatar')) {
+            $destinationPath = public_path('/storage/images/avatars');
+            $name = time() . '.' . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $name);
+
+            $user = Auth::user();
+            $user->avatar = $name;
+            $user->save();
+            return response()->json($user);
+        }
     }
 }
