@@ -19,6 +19,8 @@ class DailySaturation extends Model
         'date',
         'bpm',
         'spo2',
+        'stress_number',
+        'desc',
     ];
 
     /**

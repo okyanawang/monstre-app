@@ -26,22 +26,31 @@ class DailySaturationController extends Controller
         $bpm = $request->bpm;
         $spo2 = $request->spo2;
 
+        $process = shell_exec('py ' . app_path() . '/Http/Controllers/fuzzy-stress.py ' . $bpm . ' ' . $spo2);
+        $result = explode(' ', $process);
+        $type = 'insert';
+
         $todaySaturation = DB::table('daily_saturation')->where('user_id', $user->id)->where('date', $date)->first();
         if ($todaySaturation) {
             DB::table('daily_saturation')->where('user_id', $user->id)->where('date', $date)->update([
                 'bpm' => $bpm,
                 'spo2' => $spo2,
+                'stress_number' => intval($result[0]),
+                'desc' => $result[1],
             ]);
+            $type = 'update';
         } else {
             DB::table('daily_saturation')->insert([
                 'user_id' => $user->id,
                 'date' => $date,
                 'bpm' => $bpm,
                 'spo2' => $spo2,
+                'stress_number' => intval($result[0]),
+                'desc' => $result[1],
             ]);
         }
 
-        return response()->json(['msg' => 'Today\'s Saturation set successfully']);
+        return response()->json(['msg' => 'Today\'s Saturation set successfully', 'type' => $type, 'data' => ['user_id' => $user->id, 'date' => $date, 'bpm' => $bpm, 'spo2' => $spo2, 'stress_number' => $result[0], 'desc' => $result[1]]], 200);
     }
 
     public function getTodaySaturation()

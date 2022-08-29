@@ -38,11 +38,11 @@ class UserController extends Controller
         }
 
         if ($image = $request->file('avatar')) {
-            $destinationPath = public_path('/storage/images/avatars');
-            $name = time() . '.' . $image->getClientOriginalExtension();
+            $user = Auth::user();
+            $destinationPath = public_path('/storage/images/avatars/' . $user->id);
+            $name = $user->id . '-' . time() . '.' . $image->getClientOriginalExtension();
             $image->move($destinationPath, $name);
 
-            $user = Auth::user();
             $user->avatar = $name;
             $user->save();
             return response()->json($user);

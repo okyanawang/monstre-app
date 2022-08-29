@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('date');
             $table->integer('bpm');
             $table->integer('spo2');
+            $table->integer('stress_number');
+            $table->string('desc');
         });
     }
 
