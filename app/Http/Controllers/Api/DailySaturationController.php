@@ -72,7 +72,7 @@ class DailySaturationController extends Controller
 
     public function getTodaySaturation()
     {
-        return response()->json(['status' => 'success', 'data' => DB::select('SELECT * FROM daily_saturation WHERE date = CURDATE() AND user_id = ? LIMIT 1', [auth()->user()->id])]);
+        return response()->json(['status' => 'success', 'data' => DB::table('daily_saturation')->where('user_id', auth()->user()->id)->where('date', date('Y-m-d'))->first()], 200);
     }
 
     // Get data from start of the week (monday), to end of the week (sunday)
@@ -96,18 +96,18 @@ class DailySaturationController extends Controller
     // Full week (7) days
     public function getFullWeekSaturation()
     {
-        return response()->json(['status' => 'success', 'data' => DB::select('SELECT * FROM daily_saturation WHERE user_id = ? AND date BETWEEN CURDATE() - INTERVAL 7 DAY AND CURDATE()', [auth()->user()->id])]);
+        return response()->json(['status' => 'success', 'data' => DB::table('daily_saturation')->where('user_id', auth()->user()->id)->whereBetween('date', [Carbon::now()->subDays(7), Carbon::now()])->get()]);
     }
 
     // Full month (30) days
     public function getFullMonthSaturation()
     {
-        return response()->json(['status' => 'success', 'data' => DB::select('SELECT * FROM daily_saturation WHERE user_id = ? AND date BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()', [auth()->user()->id])]);
+        return response()->json(['status' => 'success', 'data' => DB::table('daily_saturation')->where('user_id', auth()->user()->id)->whereBetween('date', [Carbon::now()->subDays(30), Carbon::now()])->get()]);
     }
 
     // Full year (365) days
     public function getFullYearSaturation()
     {
-        return response()->json(['status' => 'success', 'data' => DB::select('SELECT * FROM daily_saturation WHERE user_id = ? AND date BETWEEN CURDATE() - INTERVAL 365 DAY AND CURDATE()', [auth()->user()->id])]);
+        return response()->json(['status' => 'success', 'data' => DB::table('daily_saturation')->where('user_id', auth()->user()->id)->whereBetween('date', [Carbon::now()->subDays(365), Carbon::now()])->get()]);
     }
 }
