@@ -57,6 +57,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         // API route to get full year saturation
         Route::get('/get-full-year', [DailySaturationController::class, 'getFullYearSaturation']);
     });
+
+    Route::get('/articles', [App\Http\Controllers\Api\UserController::class, 'getArticles']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
