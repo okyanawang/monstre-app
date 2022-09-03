@@ -43,7 +43,7 @@ class UserController extends Controller
             $name = $user->id . '-' . time() . '.' . $image->getClientOriginalExtension();
             $image->move($destinationPath, $name);
 
-            $user->avatar = $name;
+            $user->avatar = '/storage/images/avatars/' . $user->id . '/' . $name;
             $user->save();
             return response()->json($user);
         }
