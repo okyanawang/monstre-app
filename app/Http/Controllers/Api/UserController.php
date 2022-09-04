@@ -54,7 +54,8 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $lastSaturation = DB::table('daily_saturation')->where('user_id', $user->id)->orderBy('date', 'desc')->first();
-        if (strtolower($lastSaturation->desc) == 'stress' || strtolower($lastSaturation->desc) == 'anxious') {
+
+        if ($lastSaturation && (strtolower($lastSaturation->desc) == 'stress' || strtolower($lastSaturation->desc) == 'anxious')) {
             if (strtolower($user->personality[0]) == 'i') {
                 return [
                     'type' => 'articles',
