@@ -25,6 +25,7 @@ class UserController extends Controller
         $user = Auth::user();
         $user->personality = $request->personality;
         $user->save();
+
         return response()->json($user);
     }
 

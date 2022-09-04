@@ -26,7 +26,6 @@ class DailySaturationController extends Controller
         $bpm = $request->bpm;
         $spo2 = $request->spo2;
 
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
