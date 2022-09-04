@@ -96,8 +96,10 @@ class UserController extends Controller
             return [
                 'type' => 'message',
                 'data' => [
-                    'title' => 'Your emotion is on a good level',
-                    'desc' => 'Keep your work pace, steady, and no need to rush things up.'
+                    [
+                        'title' => 'Your emotion is on a good level',
+                        'desc' => 'Keep your work pace, steady, and no need to rush things up.'
+                    ]
                 ]
             ];
         }
